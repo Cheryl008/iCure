@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
 
-class SuccessfullyLogInTests(unittest.TestCase):
+class SuccessfullyMakePost(unittest.TestCase):
 	
 	def setUp(self):
 		dire = os.path.dirname(os.path.abspath(__file__))
@@ -30,8 +30,17 @@ class SuccessfullyLogInTests(unittest.TestCase):
 		input_password_box.send_keys("12345678")
 		confirm_button = log_then_sign_button = driver.find_element_by_xpath('//button[@type="submit"]')
 		confirm_button.click()
-		
-		assert "<title>iCure</title>" in driver.page_source
+		forum_button = driver.find_element_by_id("forum-button")
+		forum_button.click()
+		make_post_button = driver.find_element_by_name("make-post")
+		make_post_button.click()
+		title = driver.find_element_by_id("add-post-title")
+		title.clear()
+		title.send_keys("Test from Selenium")
+		sumbit_button = driver.find_element_by_id("submit")
+		sumbit_button.click()
+
+		assert "Please provide title and content" in driver.page_source
 	
 
 	def tearDown(self):
