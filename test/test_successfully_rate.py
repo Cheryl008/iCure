@@ -5,9 +5,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.action_chains import ActionChains
 
 
-class SuccessfullyLogInTests(unittest.TestCase):
+class SuccessfullyRate(unittest.TestCase):
 	
 	def setUp(self):
 		dire = os.path.dirname(os.path.abspath(__file__))
@@ -30,8 +31,8 @@ class SuccessfullyLogInTests(unittest.TestCase):
 		input_password_box.send_keys("12345678")
 		confirm_button = log_then_sign_button = driver.find_element_by_xpath('//button[@type="submit"]')
 		confirm_button.click()
-		
-		assert "<title>iCure</title>" in driver.page_source
+
+		assert "Appointment" in driver.page_source
 	
 
 	def tearDown(self):

@@ -1,0 +1,22 @@
+Test Cases
+
+To ensure some of test cases successful, we need to 
+1. create a patient with email "wf541@nyu.edu" and with password "12345678", whose name is "Cheryl Feng"
+2. create a doctor with email "jan1@doc.com" and with password "80420614", whose name is "Jane Thompson"
+3. "Cheryl Feng" has a post named "Hello"
+4. There is at least one appointment between "Cheryl Feng" and "Jane Thompson"
+
+1. test_forum_button: To test whether users can enter forum page through home page
+2. test_search_comment: To test whether users can enter the post by clicking the title and whether they can filter the comments using author's name
+3. test_successfully_leave_comment: To test whether logged in users can leave comment
+4. test_successfully_leave_comment: To test whether logged in users can make a new post
+5. test_search_post: to test whether users can filter the posts using posts' titles or authors' name
+6. test_create_doctor_account_button: to test whether this button can create a doctor account
+7. test_create_patient_account_button: to test whether this button can create a patient account
+8. test_log_then_sign_button: to test whether the sign up button works in the login page
+9. test_signup_button: to test whether the sign up button from the home page works
+10. test_successfully_login: to test whether user can successully log in if the input information is in our database
+11. test_successfully_make_appointment: to test whether a  patient can successfully make an appointment with a doctor
+12. test_successfully_make_diagnosis: to test whether a doctor can successfully make diagnosis for an appointment
+13. test_successfully_rate: to test whether a patient can successfully rate an appointment
+14. test_search: to test whether a user can find a doctor using search bar
