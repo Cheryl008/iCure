@@ -19,7 +19,6 @@ const Post = mongoose.model('Post');
 const Comment = mongoose.model('Comment');
 const MedicalProfile = mongoose.model('MedicalProfile');
 const Id = mongoose.model('Id');
-const passwordHash = require('password-hash');
 
 const app = express();
 
@@ -38,6 +37,8 @@ const sessionOptions = {
 
 app.use(session(sessionOptions));
 
+//use the middleware to store the session information of users
+
 app.use(function(req, res, next){
 	res.locals.is_doctor = req.session.is_doctor;
 	res.locals.type = req.session.type;
@@ -47,139 +48,7 @@ app.use(function(req, res, next){
   next();
 });
 
-app.get("/login", function(req, res) {
-    res.render('login', {layout: false});
-});
-
-app.get("/signup", function(req, res) {
-    res.render('signup', {layout: false});
-});
-
-app.get("/loginCheck", function(req,res){
-	if (req.query.usertype==="Doctor") {
-		Doctor.findOne({email:req.query.Email, password: req.query.Password}, function(error, data){
-			if (data) {
-				req.session.is_doctor = true;
-				req.session.type = "Doctor";
-				req.session.name = data.name;
-				req.session._id = data.id;
-				req.session.slug = data.slug;
-				res.redirect("/");
-			} else {
-				const errormessage="Sorry! Incorrect username or password. Please try again.";
-				res.render("login", {"error": errormessage});
-			}
-		});
-	} else if (req.query.usertype==="Patient"){
-		Patient.findOne({email:req.query.Email, password: req.query.Password}, function(error, data){
-			if (data) {
-				req.session.is_doctor = false;
-				req.session.type = "Patient";
-				req.session.name = data.name;
-				req.session._id = data.id;
-				req.session.slug = data.slug;
-				res.redirect("/");
-			}
-			else {
-				const errormessage="Sorry! Incorrect username or password. Please try again.";
-				res.render("login", {"error": errormessage});
-			}
-		});
-	}
-});
-
-
-app.get('/registerDoctor', function(req, res){
-	res.render("registerDoctor",{layout: false});
-});
-
-
-app.get('/registerPatient', function(req, res){
-	res.render("registerPatient",{layout: false});
-});
-
-
-app.post('/registerPatient', function(req, res){
-	let patient;
-	Id.findOne({type:'init'},function(error, data){
-		if (data) {
-		const id = data.id;
-		new Patient({
-		name: sanitize(req.body.Name),
-		password: sanitize(req.body.Password),
-		gender: sanitize(req.body.Gender),
-		id: id.toString(),
-		date_of_birth: sanitize(req.body.DateOfBirth),
-		phone: sanitize(req.body.Phone),
-		address: sanitize(req.body.Address),
-		email: sanitize(req.body.Email),
-	}).save(function(error,newPatient){
-		if (error) {
-			console.log(error);
-			const errormessage = "Invalid register information!";
-			res.render('error', {"error": errormessage});
-		} else {
-			patient = newPatient;
-			const NewId = id+1;
-			Id.findOneAndUpdate({type:'init'},{id:NewId},function(error){
-				if (error) {
-					const errormessage = "Invalid register information!";
-					res.render('error', {"error": errormessage});
-					console.log(error);
-				} else {
-					new MedicalProfile({
-						patient_id:currentAppointment.patient_id
-							}).save(function(error,data){
-								if (data) {
-									res.redirect('/');
-								}
-							});
-				}
-			});
-		}
-	});
-		} 
-	});
-});
-
-app.post('/registerDoctor', function(req, res){
-	Id.findOne({type:'init'},function(error, data){
-		if (data) {
-				const id = data.id;
-				new Doctor({
-				name: sanitize(req.body.Name),
-				password: sanitize(req.body.Password),
-				gender: sanitize(req.body.Gender),
-				id: id.toString(),
-				date_of_birth: sanitize(req.body.DateOfBirth),
-				phone: sanitize(req.body.Phone),
-				address: sanitize(req.body.Address),
-				email: sanitize(req.body.Email),
-				resume: sanitize(req.body.Resume),
-				department: sanitize(req.body.Department),
-				hospital: sanitize(req.body.Hospital),
-				position: sanitize(req.body.Position),
-				rating: 0
-			}).save(function(error){
-		if (error) {
-			console.log(error);
-			const errormessage = "Invalid register information!";
-			res.render('error', {"error": errormessage});
-		} else {
-			const NewId = id+1;
-			Id.findOneAndUpdate({type:'init'},{id:NewId},function(error){
-				if (error) {
-					console.log(error);
-				} else {
-					res.redirect('/');
-				}
-			});
-		}
-	});
-		} 
-	});
-	});
-
+//get the homepage
 app.get('/', (req, res) => {
 	let twentyPosts;
 	let selectedPosts;
@@ -200,7 +69,147 @@ app.get('/', (req, res) => {
 		});
 });
 
+//load the login page
+app.get("/login", function(req, res) {
+    res.render('login', {layout: false});
+});
 
+//load the registerpage
+app.get("/signup", function(req, res) {
+    res.render('signup', {layout: false});
+});
+
+//check whether the login is valid with email and password 
+
+app.get("/loginCheck", function(req,res){
+	if (req.query.usertype==="Doctor") {
+		Doctor.findOne({email:req.query.Email, password: req.query.Password}, function(error, data){
+			if (data) {
+				req.session.is_doctor = true;
+				req.session.type = "Doctor";
+				req.session.name = data.name;
+				req.session._id = data.id;
+				req.session.slug = data.slug;
+				res.redirect("/");
+			} else {
+				const errormessage="Sorry! Incorrect username or password. Please try again.";
+				res.render("error", {"error": errormessage});
+			}
+		});
+	} else if (req.query.usertype==="Patient"){
+		Patient.findOne({email:req.query.Email, password: req.query.Password}, function(error, data){
+			if (data) {
+				req.session.is_doctor = false;
+				req.session.type = "Patient";
+				req.session.name = data.name;
+				req.session._id = data.id;
+				req.session.slug = data.slug;
+				res.redirect("/");
+			}
+			else {
+				const errormessage="Sorry! Incorrect username or password. Please try again.";
+				res.render("error", {"error": errormessage});
+			}
+		});
+	}
+});
+
+//get the register form for doctor
+app.get('/registerDoctor', function(req, res){
+	res.render("registerDoctor",{layout: false});
+});
+
+//get the register form for patient
+app.get('/registerPatient', function(req, res){
+	res.render("registerPatient",{layout: false});
+});
+
+//store the register information of new patient into database
+app.post('/registerPatient', function(req, res){
+	let id = '1000000000';
+	Id.findOne({type:'init'},function(error, data){
+		if (data) {
+			id = data.id;
+		}
+	});
+	new Patient({
+		name: sanitize(req.body.Name),
+		password: sanitize(req.body.Password),
+		gender: sanitize(req.body.Gender),
+		id: id.toString(),
+		date_of_birth: sanitize(req.body.DateOfBirth),
+		phone: sanitize(req.body.Phone),
+		address: sanitize(req.body.Address),
+		email: sanitize(req.body.Email),
+	}).save(function(error,newPatient){
+		if (error) {
+			console.log(error);
+			const errormessage = "Invalid register information!";
+			res.render('errorPage', {"error": errormessage});
+		} else {
+			patient = newPatient;
+			const NewId = id+1;
+			Id.findOneAndUpdate({type:'init'},{id:NewId},function(error){
+				if (error) {
+					const errormessage = "Invalid register information!";
+					res.render('errorPage', {"error": errormessage});
+					console.log(error);
+				} else {
+					new MedicalProfile({
+						patient_id:id
+							}).save(function(error,data){
+								if (data) {
+									res.redirect('/');
+								}
+							});
+				}
+			});
+		}
+	});
+});
+
+//store the register information of new doctor into database
+app.post('/registerDoctor', function(req, res){
+	let id = '1000000000';
+	Id.findOne({type:'init'},function(error, data){
+		if (data) {
+				id = data.id;
+		} 
+	});
+	new Doctor({
+		name: sanitize(req.body.Name),
+		password: sanitize(req.body.Password),
+		gender: sanitize(req.body.Gender),
+		id: id.toString(),
+		date_of_birth: sanitize(req.body.DateOfBirth),
+		phone: sanitize(req.body.Phone),
+		address: sanitize(req.body.Address),
+		email: sanitize(req.body.Email),
+		resume: sanitize(req.body.Resume),
+		department: sanitize(req.body.Department),
+		hospital: sanitize(req.body.Hospital),
+		position: sanitize(req.body.Position),
+		rating: 0
+	}).save(function(error){
+	if (error) {
+		console.log(error);
+		const errormessage = "Invalid register information!";
+		res.render('errorPage', {"error": errormessage});
+	} else {
+		const NewId = id+1;
+		Id.findOneAndUpdate({type:'init'},{id:NewId},function(error){
+			if (error) {
+				const errormessage = "Server Error!";
+				res.render('errorPage', {"error": errormessage});
+			} else {
+				res.redirect('/');
+			}
+		});
+		}
+	});
+	});
+
+//get the result of doctor search from database and sent to front-end
 app.get('/search-result', (req, res) => {
 	Doctor.find(function(err, doctors) {
 		if (req.query.option === "") {
@@ -218,6 +227,7 @@ app.get('/search-result', (req, res) => {
 	});
 });
 
+//get the detailed doctor profile
 app.get('/doctors/:slug', (req, res) => {
 	const slug = sanitize(req.params.slug);
 	Doctor.findOne({slug: slug}, function(err, doctor) {
@@ -230,7 +240,7 @@ app.get('/doctors/:slug', (req, res) => {
 	});
 });
 
-// Forum
+//enter the mian form page
 app.get('/main-forum', (req, res) => {
 	Post.find(function(err, posts) {
 		if (req.query.option === "") {
@@ -255,15 +265,16 @@ app.get('/main-forum', (req, res) => {
 	});
 });
 
+//get the page of creating a new post
 app.get('/posts-new', (req, res) => {
 	if (req.session.name !== undefined){
 	res.render('addPost'); 
 	} else {
-
 		res.redirect('/login');
 	}
 });
 
+//add the new post into database and go back to the main form
 app.post('/posts-new', (req, res) => {
 	const rawContent = JSON.parse(sanitize(req.body.content));
 	const title = sanitize(req.body.title);
@@ -282,13 +293,14 @@ app.post('/posts-new', (req, res) => {
 	});
 	newPost.save(function(err) {
 		if (err) {
-			res.render('addPost', {error: true});
+			res.render('addPost', {error: "Please provide title and content"});
 		} else {
 			res.redirect('/main-forum');
 		}
 	});
 });
 
+//get the detailed information and comments of the post
 app.get('/posts/:slug',(req, res) => {
 	const slug = sanitize(req.params.slug);
 
@@ -318,6 +330,7 @@ app.get('/posts/:slug/comments', (req, res) => {
 	res.redirect('/posts/'+slug);
 });
 
+//make new comments under the post
 app.post('/posts/:slug/comments', (req, res) => {
 	
 	if (req.session.name === undefined) {
@@ -349,7 +362,6 @@ app.post('/posts/:slug/comments', (req, res) => {
 					res.render('postConent', {commentError: true});
 				} else {
 					//res.json(savedComment);
-					console.log("here 3");
 					res.redirect('/posts/' + slug);
 				}
 			});
@@ -357,6 +369,7 @@ app.post('/posts/:slug/comments', (req, res) => {
 	});
 });
 
+//get the page(calendar) for making an appointment with a doctor
 app.get('/make-appointment/:slug', function(req, res){
 	if (req.session.name === undefined) {
 		res.redirect('/login');
@@ -364,11 +377,15 @@ app.get('/make-appointment/:slug', function(req, res){
 	const doctorSlug = req.params.slug;
 	Doctor.findOne({slug:doctorSlug}, function(error,doctor){
 		if (error){
+			const errormessage = "Server Error!";
+			res.render('errorPage', {"error": errormessage});
 			console.log(error);
 		}
 		else {
 			Appointment.find({doctor_id:doctor.id},function(error,appointment){
 				if (error){
+					const errormessage = "Server Error!";
+					res.render('errorPage', {"error": errormessage});
 					console.log(error);
 				} else {
 					res.render('makeAppointment',{doctor:doctor,appointment:JSON.stringify(appointment),slug:req.session.slug});
@@ -377,6 +394,8 @@ app.get('/make-appointment/:slug', function(req, res){
 		}
 	});
 });
+
+//store the new appointment into database
 app.post('/update-appointment',function(req,res){
 	const event = JSON.parse(req.body.newEvent);
 	const doctorId = sanitize(req.body.doctor_id).toString();
@@ -390,16 +409,22 @@ app.post('/update-appointment',function(req,res){
 	});
 	newEvent.save(function(err, appointment){
 		if (err){
+			const errormessage = "Server Error!";
+			res.render('errorPage', {"error": errormessage});
 			console.log(err);
 		} else {
 			Doctor.find({id: doctorId}, function(err, doctor) {
 				if (err) {
+					const errormessage = "Server Error!";
+					res.render('errorPage', {"error": errormessage});
 					console.log(err);
 				} else {
 					Chat.findOne({doctor_id: doctorId, patient_id: req.session._id}, function(err, chat) {
 						if (err) {
+							const errormessage = "Server Error!";
+							res.render('errorPage', {"error": errormessage});
 							console.log(err);
-						} else if (chat == undefined) {
+						} else if (chat === undefined) {
 							const newChat = new Chat({
 							doctor_id: doctorId,
 							patient_id: req.session._id,
@@ -421,24 +446,25 @@ app.post('/update-appointment',function(req,res){
 
 });
 
+//view all the appointments, including history and upcoming
 app.get('/appointment-history/:slug',function(req,res){
 	const upcoming = [];
 	const history = [];
-	let current_app = {};
+	let currentApp = {};
 	if (req.session.type === "Patient") {
 		Appointment.find({patient_id: req.session._id}, function(err, appointments) {
 			if (err) {
 				res.render('appointmentHistory', {error: true});
 			} else {
 				for (let i=0; i<appointments.length; i++ ){
-					current_app = appointments[i];
+					currentApp = appointments[i];
 					if (appointments[i].status === "Upcoming"){
-						getDoctorAndPatient(current_app);
+						getDoctorAndPatient(currentApp);
 						current_app.slotEventOverlap=false;
 						upcoming.push(current_app);
 						} else {
-								getDoctorAndPatient(current_app);
-								current_app.slotEventOverlap=false;
+								getDoctorAndPatient(currentApp);
+								currentApp.slotEventOverlap=false;
 								history.push(current_app);
 						}
 					}
@@ -471,7 +497,7 @@ app.get('/appointment-history/:slug',function(req,res){
 	}
 });
 
-
+//view the detail of an appointment
 app.get('/appointments/:slug',function(req,res){
 	let currentAppointment = {};
 	const slug = req.params.slug;
@@ -479,19 +505,19 @@ app.get('/appointments/:slug',function(req,res){
 	Appointment.findOne({slug:slug},function(err,appointment){
 		if (err) {
 			const errormessage = "errormessage";
-			res.render('error', {"error": errormessage});
+			res.render('errorPage', {"error": errormessage});
 		}else if (appointment){
 			currentAppointment = appointment;
 			Doctor.findOne({id:appointment.doctor_id},function(err,doctor){
 				currDoctor = doctor;
 				if (err) {
 					const errormessage = "errormessage";
-					res.render('error', {"error": errormessage});
+					res.render('errorPage', {"error": errormessage});
 				}else if (doctor){
 					MedicalProfile.findOne({patient_id:currentAppointment.patient_id}, function(err,data){
 						if (err) {
 							const errormessage = "errormessage";
-							res.render('error', {"error": errormessage});
+							res.render('errorPage', {"error": errormessage});
 						} else if (data){
 							res.render("appointmentDetail",{appointment:currentAppointment,doctor:currDoctor,medicalProfile:data,slug:slug});
 						} else {
@@ -499,7 +525,7 @@ app.get('/appointments/:slug',function(req,res){
 								patient_id:currentAppointment.patient_id
 							}).save(function(err,data){
 								if(err) {
-									res.render('error', {"error": errormessage});
+									res.render('errorPage', {"error": errormessage});
 								}else if (data){
 									res.render("appointmentDetail",{appointment:currentAppointment,doctor:currDoctor,medicalProfile:data,slug:slug});
 								}
@@ -512,6 +538,7 @@ app.get('/appointments/:slug',function(req,res){
 	});
 });
 
+//view and edit the diagnosis corresponding to one appointment
 app.get('/diagnosis/:slug',function(req,res){
 	let currentAppointment = {};
 	const slug = req.params.slug;
@@ -519,19 +546,19 @@ app.get('/diagnosis/:slug',function(req,res){
 	Appointment.findOne({slug:slug},function(err,appointment){
 		if (err) {
 			const errormessage = "errormessage";
-			res.render('error', {"error": errormessage});
+			res.render('errorPage', {"error": errormessage});
 		} else if (appointment){
 			currentAppointment = appointment;
 			Doctor.findOne({id:appointment.doctor_id},function(err,doctor){
 				currDoctor = doctor;
 				if (err) {
 					const errormessage = "errormessage";
-					res.render('error', {"error": errormessage});
+					res.render('errorPage', {"error": errormessage});
 				}else if (doctor){
 					MedicalProfile.findOne({patient_id:currentAppointment.patient_id}, function(err,data){
 						if (err) {
 							const errormessage = "errormessage";
-							res.render('error', {"error": errormessage});
+							res.render('errorPage', {"error": errormessage});
 						} else if (data){
 							res.render("diagnosisDetail",{appointment:currentAppointment,doctor:currDoctor,medicalProfile:data,slug:slug});
 						} else {
@@ -540,7 +567,7 @@ app.get('/diagnosis/:slug',function(req,res){
 							}).save(function(err,data){
 								if (err) {
 									const errormessage = "errormessage";
-									res.render('error', {"error": errormessage});
+									res.render('errorPage', {"error": errormessage});
 								}else{
 									res.render("diagnosisDetail",{appointment:currentAppointment,doctor:currDoctor,medicalProfile:data,slug:slug});
 								}
@@ -553,6 +580,7 @@ app.get('/diagnosis/:slug',function(req,res){
 	});
 });
 
+//get the page of rating an appoitment
 app.get('/rate/:slug',function(req,res){
 	let currentAppointment = {};
 	const slug = req.params.slug;
@@ -564,12 +592,12 @@ app.get('/rate/:slug',function(req,res){
 				currDoctor = doctor;
 				if (err) {
 					const errormessage = "errormessage";
-					res.render('error', {"error": errormessage});
+					res.render('errorPage', {"error": errormessage});
 				} else{
 					MedicalProfile.findOne({patient_id:currentAppointment.patient_id}, function(err,data){
 						if (err) {
 							const errormessage = "errormessage";
-							res.render('error', {"error": errormessage});
+							res.render('errorPage', {"error": errormessage});
 						} else if(data){
 							res.render("rateDetail",{appointment:currentAppointment,doctor:currDoctor,medicalProfile:data,slug:slug});
 						} else {
@@ -578,7 +606,7 @@ app.get('/rate/:slug',function(req,res){
 							}).save(function(err,data){
 								if (err) {
 									const errormessage = "errormessage";
-									res.render('error', {"error": errormessage});
+									res.render('errorPage', {"error": errormessage});
 								} else{
 									res.render("rateDetail",{appointment:currentAppointment,doctor:currDoctor,medicalProfile:data,slug:slug});
 								}
@@ -591,47 +619,48 @@ app.get('/rate/:slug',function(req,res){
 	});
 });
 
+//post and store the rate and comments of an appointment
 app.post('/rate/:slug',function(req,res){
- let doctor_id;
- let doc_rate = 0;
- let num = 0;
- let avg_rate = 0;
- const slug = req.params.slug;
- const rate = sanitize(req.body.rate);
- const rawComment = JSON.parse(sanitize(req.body.comment));
- const comment = rawComment["ops"][0]["insert"].trim();
- Appointment.findOneAndUpdate({slug:slug},{rate:rate,comment:comment},function(err,appointment){
-  	if (appointment){
-  		doctor_id = appointment.doctor_id;
-  		Appointment.find({doctor_id:doctor_id}, function(err, doc_apps){
-  			if (err) {
-  				const errormessage = "errormessage";
-  				res.render('error', {"error": errormessage});
-  			} else{
-  				for (i=1; i<doc_apps.length; i++) {
-  					if (doc_apps[i].rate && doc_apps[i].rate !== "0") {
-  						doc_rate  += parseInt(doc_apps[i].rate);
-  						num += 1;
-  					} 
-  				}
-  				if (num !== 0) {
-  					avg_rate = doc_rate/num;
-  				}
-  				Doctor.findOneAndUpdate({id:doctor_id},{rating: avg_rate.toFixed(1)}, function(err, doctor){
-  					if (err) {
-  						const errormessage = "errormessage";
-  						res.render('error', {"error": errormessage});
-  					} else {
-  						console.log("here");
-  						res.redirect('/rate/'+slug);
-  					}
-  				});
-  			}
-  		});
-   		}
- 	});
+	let doctor_id;
+	let doc_rate = 0;
+	let num = 0;
+	let avg_rate = 0;
+	const slug = req.params.slug;
+	const rate = sanitize(req.body.rate);
+	const rawComment = JSON.parse(sanitize(req.body.comment));
+	const comment = rawComment["ops"][0]["insert"].trim();
+	Appointment.findOneAndUpdate({slug:slug},{rate:rate,comment:comment},function(err,appointment){
+		if (appointment){
+			doctor_id = appointment.doctor_id;
+			Appointment.find({doctor_id:doctor_id}, function(err, doc_apps){
+				if (err) {
+					const errormessage = "errormessage";
+					res.render('errorPage', {"error": errormessage});
+				} else{
+					for (let i=1; i<doc_apps.length; i++) {
+						if (doc_apps[i].rate && doc_apps[i].rate !== "0") {
+							doc_rate += parseInt(doc_apps[i].rate);
+							num += 1;
+						} 
+					}
+					if (num !== 0) {
+						avg_rate = doc_rate/num;
+					}
+					Doctor.findOneAndUpdate({id:doctor_id},{rating: avg_rate.toFixed(1)}, function(err, doctor){
+						if (err) {
+							const errormessage = "errormessage";
+							res.render('errorPage', {"error": errormessage});
+						} else {
+							res.redirect('/rate/'+slug);
+						}
+					});
+				}
+			});
+		}
+	});
 });
 
+//store the diagnosis 
 app.post('/diagnosis/:slug',function(req,res){
 	const slug = req.params.slug;
 	const rawDiagnosis = JSON.parse(sanitize(req.body.diagnosis));
@@ -650,7 +679,7 @@ app.post('/diagnosis/:slug',function(req,res){
 	Appointment.findOneAndUpdate({slug:slug},{diagnosis:diagnosis,status:"History"},function(err,appointment){
 		if (err) {
 			const errormessage = "errormessage";
-			res.render('error', {"error": errormessage});
+			res.render('errorPage', {"error": errormessage});
 		} else {
 			MedicalProfile.findOneAndUpdate({patient_id:appointment.patient_id},newMedical,function(err){
 				res.redirect('/appointments/'+slug);
@@ -660,19 +689,13 @@ app.post('/diagnosis/:slug',function(req,res){
 });
 
 
-app.get('/logout', (req,res) => {
-	req.session.name = undefined;
-	req.session._id = undefined;
-	req.session.slug = undefined;
-	res.redirect('/');
-});
-
+//get the profile of doctors and patients
 app.get('/info-form/:slug',function(req,res){
 	if (req.session.type === "Doctor"){
 		Doctor.findOne({slug:req.session.slug},function(err,doctor){
 			if (err) {
 				const errormessage = "errormessage";
-				res.render('error', {"error": errormessage});
+				res.render('errorPage', {"error": errormessage});
 			} else{
 				res.render("infoForm",{my:doctor});
 			}
@@ -683,7 +706,7 @@ app.get('/info-form/:slug',function(req,res){
 				MedicalProfile.findOne({patient_id:patient.id},function(err,medicalProfile){
 					if (err){
 						const errormessage = "errormessage";
-						res.render('error', {"error": errormessage});
+						res.render('errorPage', {"error": errormessage});
 						console.log(err);
 					} else {
 						res.render("infoForm",{my:patient, medicalProfile:medicalProfile});
@@ -694,6 +717,7 @@ app.get('/info-form/:slug',function(req,res){
 	}
 });
 
+//update the profile for patients and doctors after editing the profile
 app.post('/update-profile/:slug',function(req,res){
 	let newProfile = {};
 	if (req.session.type === "Doctor"){
@@ -708,11 +732,11 @@ app.post('/update-profile/:slug',function(req,res){
 		};
 		if (sanitize(req.body.gender)) {
 			newProfile[gender] = sanitize(req.body.gender);
-		};
+		}
 		Doctor.findOneAndUpdate({slug:req.session.slug},newProfile,function(err,doctor){
 			if (err) {
 				const errormessage = "errormessage";
-				res.render('error', {"error": errormessage});
+				res.render('errorPage', {"error": errormessage});
 			} else {
 				res.redirect('/info-form/:slug');
 			}
@@ -738,13 +762,13 @@ app.post('/update-profile/:slug',function(req,res){
 		};
 		if (sanitize(req.body.gender)) {
 			newProfile[gender] = sanitize(req.body.gender);
-		};
+		}
 		Patient.findOneAndUpdate({slug:req.session.slug},newProfile,function(err,patient){
 			if (patient){
 				MedicalProfile.findOneAndUpdate({patient_id:patient.id}, newMedical,function(err,medicalProfile){
 					if (err){
 						const errormessage = "errormessage";
-						res.render('error', {"error": errormessage});
+						res.render('errorPage', {"error": errormessage});
 					} else {
 						res.redirect('/info-form/:slug');
 					}
@@ -915,23 +939,23 @@ app.post('/chat/:slug', (req, res) => {
 
 
 
-
-
-async function getDoctorAndPatient(current_app){
-	current_app = await Doctor.findOne({id:current_app.doctor_id}, function(error, doctor){
+//help fnction for get patient and doctor profile for an appointment
+function getDoctorAndPatient(currentApp){
+	currentApp = Doctor.findOne({id:currentApp.doctor_id}, function(error, doctor){
 		if (doctor){
-			current_app.doctor_name = doctor.name;
-			current_app.doctor_email = doctor.email;
-			Patient.findOne({id:current_app.patient_id},function(err,patient){
+			currentApp.doctor_name = doctor.name;
+			currentApp.doctor_email = doctor.email;
+			Patient.findOne({id:currentApp.patient_id},function(err,patient){
 				if (patient) {
-				current_app.patient_name = patient.name;
-				current_app.patient_email = patient.email;
+				currentApp.patient_name = patient.name;
+				currentApp.patient_email = patient.email;
 			}
 			});
 		}
 	});
 }
 
+//help function for randomly generating top posts on the homepage 
 function getRandom(arr, n) {
     const result = new Array(n);
     let len = arr.length;
@@ -946,5 +970,13 @@ function getRandom(arr, n) {
     }
     return result;
 }
+
+//log out 
+app.get('/logout', (req,res) => {
+	req.session.name = undefined;
+	req.session._id = undefined;
+	req.session.slug = undefined;
+	res.redirect('/');
+});
 
 app.listen(3000);

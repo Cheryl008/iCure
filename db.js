@@ -110,11 +110,9 @@ const Post = new mongoose.Schema({
 const Comment = new mongoose.Schema({
 	post: {type: mongoose.Schema.Types.ObjectId, ref:'Post'},
 	name: {type: String, required: true},
-	comment: {type: mongoose.Schema.Types.ObjectId, ref:'Comment'},
 	author_id: {type: String, required: true, maxlength: 10},
 	content: {type: String,required: true},
 	create_time: {type: Date, default: Date.now, required: true},
-	comments: [{type: mongoose.Schema.Types.ObjectId, ref:'Comment'}]
 });
 
 //medical profile

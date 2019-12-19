@@ -1,5 +1,5 @@
 {{#if error}}
-	<h1>Error!</h1>
+	<h1>{{error}}</h1>
 {{else}}	
 
 
@@ -67,7 +67,30 @@
 
 
 <div style="height: 90px"></div>  
+    {{#if is_doctor}}
+    {{#each doctors}}
+        
+        <div class="card mt-4" style="max-width: 800px; left: 20%">
 
+        <div class="row no-gutters">
+
+        <div class="col-mt text-center" style="background:rgb(83, 107, 243)">
+          <div class = "card-body">
+          <p class="card-title" style="color:white; font-size: 15px">Score</p>
+          <p class= "card-text" style="color:white; font-size: 25px">{{rating}}</p>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card-body">
+            <h5 class="card-title"><a href=/doctors/{{slug}} style="color:rgb(83, 107, 243)">{{name}}</a></h5>
+            <p class="card-text">{{resume}}</p>
+          </div>
+        </div>
+        </div>
+        </div>
+    {{/each}}
+    {{else}}
 	{{#each doctors}}
 		
 	    <div class="card mt-4" style="max-width: 800px; left: 20%">
@@ -98,8 +121,7 @@
 		
 		</div>
 	    </div>
-	    
 	{{/each}}
-
+    {{/if}}
 </div>
 {{/if}}
