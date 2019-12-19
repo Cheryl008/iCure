@@ -460,12 +460,12 @@ app.get('/appointment-history/:slug',function(req,res){
 					currentApp = appointments[i];
 					if (appointments[i].status === "Upcoming"){
 						getDoctorAndPatient(currentApp);
-						current_app.slotEventOverlap=false;
-						upcoming.push(current_app);
+						currentApp.slotEventOverlap=false;
+						upcoming.push(currentApp);
 						} else {
 								getDoctorAndPatient(currentApp);
 								currentApp.slotEventOverlap=false;
-								history.push(current_app);
+								history.push(currentApp);
 						}
 					}
 				}
@@ -477,16 +477,16 @@ app.get('/appointment-history/:slug',function(req,res){
 				res.render('appointmentHistory', {error: true});
 			} else {
 				for (let i=0; i<appointments.length; i++ ){
-					current_app = appointments[i];
+					currentApp = appointments[i];
 					if (appointments[i].status === "Upcoming"){
-						getDoctorAndPatient(current_app);
-						current_app.slotEventOverlap=false;
-						upcoming.push(current_app);
-						//console.log(current_app);
+						getDoctorAndPatient(currentApp);
+						currentApp.slotEventOverlap=false;
+						upcoming.push(currentApp);
+						//console.log(currentApp);
 						} else {
-								getDoctorAndPatient(current_app);
-								current_app.slotEventOverlap=false;
-								history.push(current_app);
+								getDoctorAndPatient(currentApp);
+								currentApp.slotEventOverlap=false;
+								history.push(currentApp);
 						}
 					}
 				}
@@ -637,7 +637,7 @@ app.post('/rate/:slug',function(req,res){
 					const errormessage = "errormessage";
 					res.render('errorPage', {"error": errormessage});
 				} else{
-					for (let i=1; i<doc_apps.length; i++) {
+					for (let i=0; i<doc_apps.length; i++) {
 						if (doc_apps[i].rate && doc_apps[i].rate !== "0") {
 							doc_rate += parseInt(doc_apps[i].rate);
 							num += 1;
