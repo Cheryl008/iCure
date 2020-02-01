@@ -186,3 +186,13 @@ a.class-title,
 a.class-title:hover {
     color: inherit;
 }
+
+.scroll { 
+                margin-left: 280px; 
+                padding:4px; 
+                width: 900px; 
+                height: 420px; 
+                overflow-x: hidden; 
+                overflow-x: auto; 
+                text-align:justify; 
+            } 

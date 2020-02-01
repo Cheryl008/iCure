@@ -1,7 +1,75 @@
 {{#if error}}
 <div>Error!</div>
 {{/if}}
-<div style="height:100px"></div>
+
+<div style="height: 50px"></div>  
+<div id="loginnavbar" style="width: 100%;box-shadow: lightgrey 0px 1px; position:fixed; height: 60px">
+    <table id="table">
+        <tr>
+            <td>
+                <table style="width: 300px"> 
+                    <tr>
+                        <td style="width: 50px">
+                            <a href="../" style="color: rgb(83, 107, 243)">Home</a>
+                        </td>
+                        <td style="width: 16px">
+                            <p class = "nav">/</p>
+                        </td>
+                        <td>
+                            <p class = "nav">Chatroom</p>
+                        </td>
+                        
+                    </tr>
+                </table>
+            </td>
+            <td align="right" style="width: 100%">
+                {{#if user}}
+                <table> 
+                    <tr>
+                        <td align="right" style="width: 400px; padding-right: 15px">
+                        <span id="greeting" style="background-color: transparent; border: none; color: grey">Hello {{user}}</span>
+                        </td>
+                        <td text-align="center" style="width: 20px; padding-right: 10px">
+                            <div class="dropdown">
+                                <button class="dropdown"><img id="user_image" src="../public/img/user_grey.png" height="20px" href='/info-form'/></button>
+                                <div class="dropdown-content">
+                                    <a href='/info-form/{{userslug}}'>Profile</a>
+                                    <a href='/appointment-history/{{userslug}}'>Appointment</a>
+                                    <a href='/chat'>Chat Room</a>
+                                    <a href='/logout'>Log Out</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                {{else}}
+                <table> 
+                    <tr>
+                        <td style="width: 60px; font-color:rgb(83, 107, 243)">
+                            <form action="/login">
+                            <input id="clicklog" type="submit" value="Log In" style="background-color: transparent; border: none; color: white">
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/signup">
+                            <input id="clicksignup" type="submit" value="Sign Up" style="background-color: transparent; border: none; color: white">
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+                {{/if}}
+            </td>
+        </tr>
+    </table>          
+</div>
+<div style="height:80px"></div>
+<div class="btn-group-vertical" >
 {{#each chats}}
-<a href=/chat/{{slug}}>{{doctor_name}} with {{patient_name}}
+
+    <a class="btn btn-primary" href="/chat/{{slug}}" role="button" style="margin-left: 130%; margin-top: 20px; background-color:rgb(83, 107, 243); color: white; height: 40px; width: 400px; border:none; border-radius:5px">{{doctor_name}} with {{patient_name}}</a>
+    <div style="height:30px"></div>
+        
 {{/each}}
+</div>
+

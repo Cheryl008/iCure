@@ -1,3 +1,8 @@
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
 <div style="height: 50px"></div>  
 <div id="loginnavbar" style="width: 100%;box-shadow: lightgrey 0px 1px; position:fixed; height: 60px">
     <table id="table">
@@ -28,9 +33,9 @@
                             <div class="dropdown">
                                 <button class="dropdown"><img id="user_image" src="../public/img/user_grey.png" height="20px" href='/info-form'/></button>
                                 <div class="dropdown-content">
-                                    <a href='/info-form'>Profile</a>
+                                    <a href='/info-form/{{userslug}}'>Profile</a>
                                     <a href='/appointment-history/{{userslug}}'>Appointment</a>
-                                    <a href='/info-form'>Chat Room</a>
+                                    <a href='/chat'>Chat Room</a>
                                     <a href='/logout'>Log Out</a>
                                 </div>
                             </div>
@@ -88,7 +93,7 @@
         <a href="/appointment-history/{{slug}}"><button class="btn btn-primary mb-3">View My Appointment</button></a>
         </div>
         <div>
-        <a href="/search-result"><button class="btn btn-primary mb-3">Back to Search</button></a>
+        <a><button class="btn btn-primary mb-3" onclick="goBack()">Back to Search</button></a>
         </div>
       </div>
   </div>

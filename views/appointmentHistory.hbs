@@ -29,9 +29,9 @@
                             <div class="dropdown">
                                 <button class="dropdown"><img id="user_image" src="../public/img/user_grey.png" height="20px" href='/info-form'/></button>
                                 <div class="dropdown-content">
-                                    <a href='/info-form'>Profile</a>
+                                    <a href='/info-form/{{userslug}}'>Profile</a>
                                     <a href='/appointment-history/{{userslug}}'>Appointment</a>
-                                    <a href='/info-form'>Chat Room</a>
+                                    <a href='/chat'>Chat Room</a>
                                     <a href='/logout'>Log Out</a>
                                 </div>
                             </div>
@@ -42,7 +42,6 @@
         </tr>
     </table>          
 </div>
-
 <div style="height:100px"></div>
 
 <!--Doctor-->
@@ -109,7 +108,7 @@
 
 <!--Patient-->
 {{else}}
-<button class="ml-4" type="button" onclick="window.location.href='/search-result'" style="height:40px; width:200px; border: solid 1.5px rgb(83, 107, 243); background-color:rgb(83, 107, 243); border-radius: 25px; color:white">Make An Appointment</button>
+<button class="ml-4" id="make-appointment" type="button" onclick="window.location.href='/search-result'" style="height:40px; width:200px; border: solid 1.5px rgb(83, 107, 243); background-color:rgb(83, 107, 243); border-radius: 25px; color:white">Make An Appointment</button>
 </div>
 
 <div style="height:30px"></div>

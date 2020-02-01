@@ -1,24 +1,27 @@
 <script>
-    function myFunction() {
+    function myFunction(is_doctor) {
         document.getElementById("address").disabled = false;
         document.getElementById("phone").disabled = false;
         document.getElementById("email").disabled = false;
         document.getElementById("button").remove();      
         document.getElementById("submit").style.display = "unset";  
-        document.getElementById("height").disabled = false;
-        document.getElementById("weight").disabled = false;
-        document.getElementById("blood").remove();
-        document.getElementById("blood_type").style.display = "unset";
-        document.getElementById("left_eye_sight").disabled = false;
-        document.getElementById("right_eye_sight").disabled = false;
-        document.getElementById("blood_pressure_high").disabled = false;
-        document.getElementById("blood_pressure_low").disabled = false;
-        document.getElementById("medical_history").disabled = false;
-        document.getElementById("allergy").disabled = false;
-        document.getElementById("hospital").disabled = false;
-        document.getElementById("department").disabled = false;
-        document.getElementById("position").disabled = false;
-        document.getElementById("resume").disabled = false;
+        if (is_doctor) {
+            document.getElementById("hospital").disabled = false;
+            document.getElementById("department").disabled = false;
+            document.getElementById("position").disabled = false;
+            document.getElementById("resume").disabled = false;
+        } else {
+            document.getElementById("height").disabled = false;
+            document.getElementById("weight").disabled = false;
+            document.getElementById("blood").remove();
+            document.getElementById("blood_type").style.display = "unset";
+            document.getElementById("left_eye_sight").disabled = false;
+            document.getElementById("right_eye_sight").disabled = false;
+            document.getElementById("blood_pressure_high").disabled = false;
+            document.getElementById("blood_pressure_low").disabled = false;
+            document.getElementById("medical_history").disabled = false;
+            document.getElementById("allergy").disabled = false;
+        }
     }
 </script>
 
@@ -67,7 +70,7 @@
         <div style="border-bottom:solid 1px lightgrey; width: 100%; align: centre; margin-bottom: 15px">
             <h5 for="add-comment-box" style="color:#00243b">Personal Information</h5>
         </div>
-        <form action="GET" class="justify-content-center">
+        <form method = "POST" class="justify-content-center" action="/update-profile/{{userslug}}">
             <div class="form-row">
                 <div class="form-group col-md-4 mb-4">
                     <label class="column-content">Name</label>
@@ -115,7 +118,7 @@
             </div>
             <div class="form-group col-md-3 mb-4">
                 <label for="exampleFormControlSelect1">Department</label>
-                <input type="text" class="form-control" id="deparment" name="deparment" value="{{my.deparment}}" disabled>
+                <input type="text" class="form-control" id="department" name="department" value="{{my.department}}" disabled>
             </div>
             <div class="form-group col-md-3 mb-4">
                 <label for="exampleFormControlSelect1">Position</label>
@@ -130,8 +133,7 @@
                 <textarea class="form-control" id="resume" style="height:150px" name="resume" disabled>{{my.resume}}</textarea>
             </div>
             {{/if}}
-            
-
+            {{#unless is_doctor}}
             <div style="height:30px"></div>
             <div style="border-bottom:solid 1px lightgrey; width: 100%; align: centre; margin-bottom: 15px">
                 <h5 for="add-comment-box" style="color:#00243b">Health Data</h5>
@@ -204,10 +206,11 @@
                 <label class="column-content">Allergy</label>  
                 <textarea class="form-control" id="allergy" style="height:100px" name="allergy" disabled>{{medicalProfile.allergy}}</textarea>
             </div>
+            {{/unless}}
             <button class="btn btn-primary" id="submit" type="submit" style="background: rgb(83, 107, 243); margin-left: 80%; display:none">Submit form</button> 
             </form>
 
-            <button class="btn btn-primary" id="button" onclick="myFunction()" style="background: rgb(83, 107, 243); margin-left: 80%">Edit</button>
+            <button class="btn btn-primary" id="button" onclick="myFunction({{is_doctor}})" style="background: rgb(83, 107, 243); margin-left: 80%">Edit</button>
            
 
     </div>
@@ -217,3 +220,5 @@
 </div>
 </div>
 </form>
+
+

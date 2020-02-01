@@ -2,21 +2,95 @@
 	<div>Error!</div>
 {{/if}}
 {{#if chat}}
-	
-	<div id="message-wrapper">
-		<div id="message-list">
-			{{#each messages}}
-			<div>{{time}} - {{text}} sent by {{sender_name}}</div>
-			{{/each}}
-		</div>
-	</div>
-	
 
-	<form method="POST" action="/chat/{{chat.slug}}/send">
+<div style="height: 50px"></div>  
+<div id="loginnavbar" style="width: 100%;box-shadow: lightgrey 0px 1px; position:fixed; height: 60px">
+    <table id="table">
+        <tr>
+            <td>
+                <table style="width: 300px"> 
+                    <tr>
+                        <td style="width: 50px">
+                            <a href="../" style="color: rgb(83, 107, 243)">Home</a>
+                        </td>
+                        <td style="width: 16px">
+                            <p class = "nav">/</p>
+                        </td>
+                        <td style="width: 80px">
+                            <a href="/chat" style="color: rgb(83, 107, 243)">Chatroom</a>
+                        </td>
+                        <td style="width: 16px">
+                            <p class = "nav">/</p>
+                        </td>
+                        <td>
+                            <p class = "nav">Private Chat</p>
+                        </td>
+                        
+                    </tr>
+                </table>
+            </td>
+            <td align="right" style="width: 100%">
+                {{#if user}}
+                <table> 
+                    <tr>
+                        <td align="right" style="width: 400px; padding-right: 15px">
+                        <span id="greeting" style="background-color: transparent; border: none; color: grey">Hello {{user}}</span>
+                        </td>
+                        <td text-align="center" style="width: 20px; padding-right: 10px">
+                            <div class="dropdown">
+                                <button class="dropdown"><img id="user_image" src="../public/img/user_grey.png" height="20px" href='/info-form'/></button>
+                                <div class="dropdown-content">
+                                    <a href='/info-form/{{userslug}}'>Profile</a>
+                                    <a href='/appointment-history/{{userslug}}'>Appointment</a>
+                                    <a href='/chat'>Chat Room</a>
+                                    <a href='/logout'>Log Out</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                {{else}}
+                <table> 
+                    <tr>
+                        <td style="width: 60px; font-color:rgb(83, 107, 243)">
+                            <form action="/login">
+                            <input id="clicklog" type="submit" value="Log In" style="background-color: transparent; border: none; color: white">
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/signup">
+                            <input id="clicksignup" type="submit" value="Sign Up" style="background-color: transparent; border: none; color: white">
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+                {{/if}}
+            </td>
+        </tr>
+    </table>          
+</div>
+
+<div style="height: 100px"></div>  
+
+
+    <div class="scroll">
+	
+			{{#each messages}}
+			<p style="font-size: 20px">{{sender_name}} says {{text}}<p>
+            
+            <p style="margin-top:-20px; font-size: 12px">{{time}}</p>
+			{{/each}}
+		
+    </div>
+
+	
+    <div style="height: 15px"></div>  
+
+	<form method="POST" action="/chat/{{chat.slug}}" style="margin-left: 550px">
 		<p><label for="send-message-box">Send a Message:</label></p>
-		<p><textarea name="message" id="send-message-box"></textarea></p>
+		<p><textarea name="message" id="send-message-box" style="width: 345px; height: 100px"></textarea></p>
 		<input type="hidden" id="chat-id" value="{{chat.slug}}">
-		<p><input type="submit" name="" value="POST!" class="submit-button" id="send-message-button"></p>
+		<p><input type="submit" name="" value="POST!" class="submit-button" id="send-message-button" style="margin-left: 30%; background-color:rgb(83, 107, 243); color: white; height: 30px; width: 80px; border:none; border-radius:5px"></p>
 	</form>
 {{/if}}
-<script type="text/javascript" src="/public/javascripts/index.js"></script>

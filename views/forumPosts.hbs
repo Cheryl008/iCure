@@ -29,9 +29,9 @@
                             <div class="dropdown">
                                 <button class="dropdown"><img id="user_image" src="../public/img/user_grey.png" height="20px" href='/info-form'/></button>
                                 <div class="dropdown-content">
-                                    <a href='/info-form'>Profile</a>
+                                    <a href='/info-form/{{userslug}}'>Profile</a>
                                     <a href='/appointment-history/{{userslug}}'>Appointment</a>
-                                    <a href='/info-form'>Chat Room</a>
+                                    <a href='/chat'>Chat Room</a>
                                     <a href='/logout'>Log Out</a>
                                 </div>
                             </div>
@@ -63,7 +63,7 @@
 		{{#if posts}}
             {{#each posts}}
                 <div style="background-color: white; box-shadow: lightgrey 0px 0px 3px; height: 160px; padding: 15px;padding-left: 20px; margin-bottom:30px; padding-right: 45px">
-                    <div style="float: left"><h2 class='forumtitle'><a style='font-size: 25px; color: #42413d' href=/posts/{{slug}}>{{title}}</a></h2></div>
+                    <div style="float: left"><h2 class='forumtitle'><a id="post-title" style='font-size: 25px; color: #42413d' href=/posts/{{slug}}>{{title}}</a></h2></div>
                     <div style="float: right; padding-top:8px"><img src="../public/img/hit.png" width="23px"/><span style="font-size:16px; font-weight:bold;color:rgb(83, 107, 243)"> {{hit}}</span></div>
                     <br/>
                     <br/>
@@ -84,7 +84,7 @@
 <div style="float: left;width: 25%; top:30px; padding-top:30px">
 	<div style="background-color: white; box-shadow: lightgrey 0px 0px 3px; height: 180px; padding:20px">
         <form method="GET" action="/main-forum">
-		<button type="button" onclick="window.location.href='/posts-new'" style="height:40px; width:130px; border: solid 1.5px rgb(83, 107, 243); background-color:rgb(83, 107, 243);  border-radius: 25px; color:white">Make My Post</button>
+		<button type="button" name="make-post" onclick="window.location.href='/posts-new'" style="height:40px; width:130px; border: solid 1.5px rgb(83, 107, 243); background-color:rgb(83, 107, 243);  border-radius: 25px; color:white">Make My Post</button>
 		<br/>
 		<br/>
 		<p style="color: #42413d; font-weight: bold">Search for:</p>
@@ -93,7 +93,7 @@
 	    	<option value="name">Author</option>
 		</select>
 	    <input type="text" name="option" value="" id="filter-option" style="background-color:transparent; border: solid 1.2px #00243b; height:31px">
-		<input type="submit" style="background-color:rgb(83, 107, 243); height:30px; color:white; border: solid 1.5px rgb(83, 107, 243);border-radius: 3px;" value="Submit">
+		<input type="submit" id="submit-buttom" style="background-color:rgb(83, 107, 243); height:30px; color:white; border: solid 1.5px rgb(83, 107, 243);border-radius: 3px;" value="Submit">
         </form>
        
 	</div>

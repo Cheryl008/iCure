@@ -1,72 +1,45 @@
 # iCure
-A Software Engineering Project
 
-## Fork
+The iCure is an Electronic Health Records system designed to support efficient communication among patients and doctors. Features include medical forum, appointment scheduling, patient-doctor private chatting, electronic records of medical treatments, and other supporting features all work together to provide both care for patients and efficiency for doctors.
 
-Fork from the Original Repo to your GitHub <br>
+The iCure allows three types of users, including visitors, patients, and doctors. In addition to common functions like searching and viewing posts, each type of logined users have access to other special functions, such as making appointments or private chatting. Moreover, to get fund for maintaining the system, there is available space for advertisements of medical-related business. With data and information we get, iCure can provide tailored service for each user, which can refine the traditional medical treatment process significantly.
 
-The First Time to Build the Local Repo
+## Prerequisites
+The iCure system requires the installation of mongodb and node.js 
 
-```
-git clone https://github.com/YOUR_ID/YOUR_REPOSITORY.git
+Node.js
 
-git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git
+Open the terminal or DOS Shell and run 'node -v' and 'npm -v'. Both commands should output a version number if the Node.js is successfully installed.
 
-git fetch upstream
+If node.js is not yet installed, please follow the instruction on this website to download and install node.js. 
+https://nodejs.org/en/
 
-git merge upstream/master
-```
+Mongodb
 
-Get the Updated Version from the Original Repo
+To install MongoDB, please use a package manager like apt on Linux or homebrew on MacOS with command 'brew install mongodb'
 
-```
-git checkout master
+An alternative way is to follow the instruction on this website https://docs.mongodb.com/manual/installation/.
 
-git fetch upstream
+## Installation and getting start
+a) Open the terminal or DOS Shell and go to the program folder. 
 
-git merge upstream/master
-```
+b) Run 'npm install' to install all required modules. 
 
-Update Codes in Branch [branchname]. You can change the branch's name.
+c) Open another window of terminal/DOS Shell, run 'mongod' and then 'mongo' to start the database of mongodb.
 
-```
-git branch [branchname]
+d) Go back to the window under the program folder and run 'node app.js' or 'nodemon app.js' to start the server. 
 
-git checkout [branchname]
+c) Open an browser and go to http://localhost:3000 to start the web application.
 
-git status
+## Contributors
 
-git add .
+Wenxin Feng -- Front-end development and test
 
-git commit -m "comment"
+Wujie Duan -- Back-end development and front-end development
 
-git push -u origin [branchname]
-```
+Xinyi Wang -- Front-end development and project management
 
-Merge Branch [branchname] to Branch master
+Zhuoer Wang -- Back-end development and test
 
-```
-git checkout master
-
-git fetch upstream
-
-git merge upstream/master
-
-git merge [branchname]
-
-git status
-
-git push -u origin master
-```
-
-Pull Request from the Original Repo <br>
-
-Approve and Merge <br>
-
-Delete Branch [branchname]
-
-```
-git branch -d [branchname]
-
-git push origin --delete [branchname]
-```
+## Documentation 
+For detailed information about iCure system, please refer to the documentation in the documentation folder.

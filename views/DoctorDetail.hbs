@@ -1,7 +1,11 @@
 {{#if error}}
 	<h1>Error!</h1>
 {{else}}	
-
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
 <div style="height: 50px"></div>
 <div id="loginnavbar" style="width: 100%;box-shadow: lightgrey 0px 1px; position:fixed; height: 60px">
     <table id="table">
@@ -16,7 +20,7 @@
                             <p class = "nav">/</p>
                         </td>
                         <td>
-                            <a href="/search-result" style="color: rgb(83, 107, 243)">Search Result</a>
+                            <a onclick="goBack()" style="color: rgb(83, 107, 243)">Go Back</a>
                         </td>
                         <td style="width: 16px">
                             <p class = "nav">/</p>
@@ -39,9 +43,9 @@
                             <div class="dropdown">
                                 <button class="dropdown"><img id="user_image" src="../public/img/user_grey.png" height="20px" href='/info-form'/></button>
                                 <div class="dropdown-content">
-                                    <a href='/info-form'>Profile</a>
+                                    <a href='/info-form/{{userslug}}'>Profile</a>
                                     <a href='/appointment-history/{{userslug}}'>Appointment</a>
-                                    <a href='/info-form'>Chat Room</a>
+                                    <a href='/chat'>Chat Room</a>
                                     <a href='/logout'>Log Out</a>
                                 </div>
                             </div>

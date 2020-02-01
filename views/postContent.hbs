@@ -28,24 +28,42 @@
                 </table>
             </td>
             <td align="right" style="width: 100%">
+                {{#if user}}
                 <table> 
                     <tr>
                         <td align="right" style="width: 400px; padding-right: 15px">
-                        <span id="greeting" style="background-color: transparent; border: none; color: grey">Hello {{user}}</span>
+                        <span id="greeting" style="background-color: transparent; border: none; color: white">Hello {{user}}</span>
                         </td>
                         <td text-align="center" style="width: 20px; padding-right: 10px">
                             <div class="dropdown">
-                                <button class="dropdown"><img id="user_image" src="../public/img/user_grey.png" height="20px" href='/info-form'/></button>
+                                <button class="dropdown"><img id="user_image" src="../public/img/user_white.png" height="20px" href='/info-form/{{userslug}}'/></button>
                                 <div class="dropdown-content">
-                                    <a href='/info-form'>Profile</a>
+                                    <a href='/info-form/{{userslug}}'>Profile</a>
                                     <a href='/appointment-history/{{userslug}}'>Appointment</a>
-                                    <a href='/info-form'>Chat Room</a>
+                                    <a href='/chat'>Chat Room</a>
                                     <a href='/logout'>Log Out</a>
                                 </div>
                             </div>
                         </td>
                     </tr>
                 </table>
+
+                {{else}}
+                <table> 
+                    <tr>
+                        <td style="width: 60px">
+                            <form action="/login">
+                            <input id="clicklog" type="submit" value="Log In" style="background-color: transparent; border: none; color: grey">
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/signup">
+                            <input id="clicksignup" type="submit" value="Sign Up" style="background-color: transparent; border: none; color: grey">
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+                {{/if}}
             </td>
         </tr>
     </table>          

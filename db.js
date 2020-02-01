@@ -3,12 +3,8 @@
 const mongoose = require('mongoose');
 const URLSlugs = require('mongoose-url-slugs');
 
-//visitor
-const Visitor = new mongoose.Schema({
-	id: {type: String, required: true, minlength: 10, maxlength: 10}
-});
-
 //id
+//* id is a number that help generating the id for doctors and patients 
 const Id = new mongoose.Schema({
 	type : {type: String, required: true},
 	id :{type: Number, required: true, default: 1000000000}
@@ -66,10 +62,6 @@ const Appointment = new mongoose.Schema({
 // * each message is related to one doctor and one patient
 // * each message has a unique create time
 const Message = new mongoose.Schema({
-	//doctor_id: {type: String,required: true, minlength: 10, maxlength: 10},
-	//patient_id: {type: String,required: true, minlength: 10, maxlength: 10},
-	//doctor_name: {type: String, required: true},
-	//patient_name: {type: String, required: true},
 	sender_type: {type: String, required: true},
 	sender_name: {type: String, required: true},
 	sender_id: {type: String,required: true, minlength: 10, maxlength: 10},
@@ -110,11 +102,9 @@ const Post = new mongoose.Schema({
 const Comment = new mongoose.Schema({
 	post: {type: mongoose.Schema.Types.ObjectId, ref:'Post'},
 	name: {type: String, required: true},
-	comment: {type: mongoose.Schema.Types.ObjectId, ref:'Comment'},
 	author_id: {type: String, required: true, maxlength: 10},
 	content: {type: String,required: true},
 	create_time: {type: Date, default: Date.now, required: true},
-	comments: [{type: mongoose.Schema.Types.ObjectId, ref:'Comment'}]
 });
 
 //medical profile
@@ -141,10 +131,8 @@ Chat.plugin(URLSlugs('doctor_id patient_id'));
 Post.plugin(URLSlugs('author_id create_time'));
 Comment.plugin(URLSlugs('author_id create_time'));
 MedicalProfile.plugin(URLSlugs('patient_id'));
-Visitor.plugin(URLSlugs('id'));
 Id.plugin(URLSlugs('id'));
 
-mongoose.model('Visitor', Visitor);
 mongoose.model('Patient', Patient);
 mongoose.model('Doctor', Doctor);
 mongoose.model('Appointment', Appointment);

@@ -1,5 +1,5 @@
 {{#if error}}
-	<h1>Error!</h1>
+	<h1>{{error}}</h1>
 {{else}}	
 
 
@@ -34,9 +34,9 @@
                             <div class="dropdown">
                                 <button class="dropdown"><img id="user_image" src="../public/img/user_grey.png" height="20px" href='/info-form'/></button>
                                 <div class="dropdown-content">
-                                    <a href='/info-form'>Profile</a>
+                                    <a href='/info-form/{{userslug}}'>Profile</a>
                                     <a href='/appointment-history/{{userslug}}'>Appointment</a>
-                                    <a href='/info-form'>Chat Room</a>
+                                    <a href='/chat'>Chat Room</a>
                                     <a href='/logout'>Log Out</a>
                                 </div>
                             </div>
@@ -67,7 +67,30 @@
 
 
 <div style="height: 90px"></div>  
+    {{#if is_doctor}}
+    {{#each doctors}}
+        
+        <div class="card mt-4" style="max-width: 800px; left: 20%">
 
+        <div class="row no-gutters">
+
+        <div class="col-mt text-center" style="background:rgb(83, 107, 243)">
+          <div class = "card-body">
+          <p class="card-title" style="color:white; font-size: 15px">Score</p>
+          <p class= "card-text" style="color:white; font-size: 25px">{{rating}}</p>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card-body">
+            <h5 class="card-title"><a href=/doctors/{{slug}} style="color:rgb(83, 107, 243)">{{name}}</a></h5>
+            <p class="card-text">{{resume}}</p>
+          </div>
+        </div>
+        </div>
+        </div>
+    {{/each}}
+    {{else}}
 	{{#each doctors}}
 		
 	    <div class="card mt-4" style="max-width: 800px; left: 20%">
@@ -87,18 +110,18 @@
 		    <p class="card-text">{{resume}}</p>
 		  </div>
 		</div>
-	
 
+        {{#unless is_doctor}}
 		<div class="col-md text-center">
 		  <div class = "card-body mt-4">
 		  <a href="/make-appointment/{{slug}}" style="color: rgb(83, 107, 243); position: center">Make An Appointment</a>
 		  </div>
 		</div>
+        {{/unless}}
 		
 		</div>
 	    </div>
-	    
 	{{/each}}
-
+    {{/if}}
 </div>
 {{/if}}

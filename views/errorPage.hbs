@@ -1,0 +1,33 @@
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+<div style="height: 50px"></div>
+<div id="loginnavbar" style="width: 100%;box-shadow: lightgrey 0px 1px; position:fixed; height: 60px">
+    <table id="table">
+        <tr>
+            <td>
+                <table style="width: 500px"> 
+                    <tr>
+                        <td style="width: 50px">
+                            <a href="../" style="color: rgb(83, 107, 243)">Home</a>
+                        </td>
+                        <td>
+                        <a onclick="goBack()" style="color: rgb(83, 107, 243)">Go Back</a>
+                    </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>          
+</div>
+<div style="height:60px"></div>
+<div style="float:left; width: 70%; padding-left:60px; padding-top: 30px; padding-bottom: 30px; margin-bottom: 30px; margin-right:30px">
+<div style="background-color: white; box-shadow: lightgrey 0px 0px 3px; height: 70px; padding: 15px;padding-left: 20px; margin-bottom:30px; padding-right: 45px">
+        
+    <div style="float: left"><h2 class='forumtitle'>{{error}}</h2></div>
+</div>
+</div>
+<br clear="all">

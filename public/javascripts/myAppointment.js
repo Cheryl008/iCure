@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
     minTime:'08:00:00',
     maxTime: '18:00:00',
 select: function(info){
-    //document.getElementById("modal-text").style.display="block";
       dateStart = new Date(info.startStr);
       dateEnd = new Date(info.endStr);
     var time_slot = document.getElementById("validationTooltip01");
