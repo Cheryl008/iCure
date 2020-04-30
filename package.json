@@ -32,7 +32,7 @@
     "fullcalendar": "^3.10.1",
     "googleapis": "^39.2.0",
     "hbs": "^4.0.5",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "mongo-sanitize": "^1.0.1",
     "mongoose": "^5.7.5",
