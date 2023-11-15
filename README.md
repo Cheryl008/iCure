@@ -1,5 +1,7 @@
 # iCure
 
+hahahahahahhah
+
 The iCure is an Electronic Health Records system designed to support efficient communication among patients and doctors. Features include medical forum, appointment scheduling, patient-doctor private chatting, electronic records of medical treatments, and other supporting features all work together to provide both care for patients and efficiency for doctors.
 
 The iCure allows three types of users, including visitors, patients, and doctors. In addition to common functions like searching and viewing posts, each type of logined users have access to other special functions, such as making appointments or private chatting. Moreover, to get fund for maintaining the system, there is available space for advertisements of medical-related business. With data and information we get, iCure can provide tailored service for each user, which can refine the traditional medical treatment process significantly.
